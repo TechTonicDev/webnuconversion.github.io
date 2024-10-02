@@ -1,0 +1,2604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Binary to Octal Converter</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <style>
+         .result-box {
+            border: 2px inset black;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            position: relative;
+            background:#d2cccc;
+            font-weight:bold;
+            color:Charcoal;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .result-box .alert-info {
+            color: Cognac; 
+            font-weight:bold;
+            background-color:#eaedf0;
+            border:2px outset black;
+          
+        }
+
+        .factorization-diagram {
+            display: flex;
+            justify-content: start;
+            align-items: flex-start;
+            font-family: monospace;
+        }
+
+        .factorization-diagram .divider {
+            border-right: 2px solid black;
+            padding-right: 10px;
+            margin-right: 10px;
+            display: inline-block;
+        }
+
+        .remainder-arrow {
+            color: purple;
+            font-weight: bold;
+        }
+
+        .step-info {
+            margin-left: 2rem;
+            border-bottom: 1px solid black;
+        }
+         .result-box {
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            position: relative;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 1.5rem; /* Adjust size */
+        }
+         .result-boxes {
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            position: relative;
+        }
+        .delete-btns {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 1.5rem; /* Adjust size */
+        }
+        .resultt-box {
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background:lightgrey;
+            color: dimgrey;
+            font-weight:bold; /* Ensure text color is white */
+        }
+
+        .resultt-box .alert-infoo {
+            color: white; 
+            background-color:slategrey;
+            border:2px outset black;
+          
+        }
+
+        .deleted-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        table {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            border-collapse: collapse; /* Ensure borders are collapsed */
+        }
+
+        thead th {
+            background-color: black !important; /* Force background color */
+            color: white !important; /* Ensure text color is white for visibility */
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            padding: 0.75rem;
+            border: 2px inset #dee2e6;
+            text-align: center;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        .mycard{
+            margin-top:110px;
+            position: relative;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .animated-text {
+            position: absolute;
+            top: 430px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            animation: slideIn 2s ease-in-out forwards, colorChange 3s infinite; /* Add looping color change */
+            text-align: center;
+            white-space: nowrap; /* Prevents text wrapping */
+        }
+        .text{
+            position: absolute;
+            top: 420px;
+            background-color:black;
+            box-shadow:5px 5px 10px rgba(0,0,0,0.2) ;
+            width:100%;
+            height:70px ;/* Start near the top of the video */
+            border-bottom:3px inset red; 
+        }
+
+        /* Slide in animation */
+        @keyframes slideIn {
+            0% {
+                left: -100%; /* Start completely off-screen to the left */
+            }
+            100% {
+                left: 50%; /* Move to the center */
+                transform: translateX(-50%); /* Center the text */
+            }
+        }
+       
+
+        /* Color change animation */
+        @keyframes colorChange {
+            0% {
+                color: white;
+            }
+            50% {
+                color: yellow;
+            }
+            70% {
+                color: green;
+            100% {
+                color: red;
+            }
+        }
+
+
+    </style>
+</head>
+
+<body class="bg-light">
+    <div class="video-wrapper">
+        <video autoplay muted loop class="video-background">
+            <source src="image/bg.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="container-fluid bg-light ">
+        <div class="text"></div>
+        <div class="animated-text">Number System Conversion</div>
+        <div class="card shadow" style='
+            top:88px;'>
+            <div class="card-body" style="margin:0px;padding:0px">
+                <div class="row"  >
+                   <div class="col-md-6" style="margin:0px;padding:0px">
+    <img src="image/image4.jpg" class="img-fluid w-100 h-100 rounded" style="object-fit: center;">
+</div>
+
+                    <div class="col-md-6 mt-3">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex  text-white justify-content-between" style='background:slategrey;'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px; '>What is Number System</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon1" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5 bg-light px-4 py-3" id="collapseExample1" style="font-style: italic;">
+                            Number system conversion involves converting a number from one numeral system to another. Numeral systems are ways of expressing numbers using a consistent set of symbols. Common numeral systems include binary, octal, decimal, and hexadecimal.
+                          </div>
+                          <div class="d-flex  text-white justify-content-between mt-3 shadow" style='background:slategrey;'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'> Number System Conversion Process</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon2" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse mt-2 h5" id="collapseExample2">
+                           <img src="image/number.png" alt="">
+                          </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+            <!-- ///------------------------third section-------------------------- -->
+             <div class="card mycard bg-light shadow"  >
+            <div class="card-header shadow  shadow text-white text-center h3" style='background-color:slategrey ;'>
+                Number system Converter
+            </div>
+            <div class="card-body shadow bg-light">
+
+               <div class="d-flex justify-content-around">
+                <div class="mydiv" style='width:550px'>
+                <label class='form-label text-dark h5'>Convert from</label>
+                <select name="op1" id="op1" class='form-control mx-3 from-control-lg bg-light ' style='height:45px;border:2px inset darkslategrey ;color:darkslategrey;font-weight:bold ;'>
+                    <option value="binary">Binary</option>
+                    <option value="octal">Octal</option>
+                    <option value="decimal">Decimal</option>
+                    <option value="hexadecimal">Hexadecimal</option>
+                </select>
+                </div>
+                <div class="secdev"style='width:550px'>
+                    <label class='form-label text-dark h5'>Convert To</label>
+                <select name="op2" id="op2" class='form-control mx-3'style='height:45px;border:2px inset darkslategrey ;color:darkslategrey;font-weight:bold ;'>
+                    <!-- Options will be populated dynamically -->
+                </select>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="converterSections">
+             <div id="binaryToOctal" class="converter-card card p-4">
+                 <div class="card-body ">
+                    <div class="card-header " style='background-color: lightgrey;color:darkslategrey;border:1px groove darkslategrey ;'>
+                <h2 class="text-center ">Binary to Octal Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex  text-white justify-content-between shadow"style='background-color: dimgrey;border-radius:7px ;'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>What is Binary no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:lightgrey ;">
+                           A binary number is a number expressed in the binary numeral system, which uses only two digits: 0 and 1. This system is also known as base-2.
+                          </div>
+                          <div class="d-flex shadow  text-white justify-content-between mt-3"style='background-color: dimgrey;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px; ;'> What is Octal NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-2 " id="collapseExample4" style='background-color:lightgrey ;'>
+                          The octal number system refers to the number system that uses eight as its base. The base 8 number system is a system where values are represented using numbers 0 to 7. For example, (21)8, (14)8.
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex  text-white justify-content-between shadow"style='background-color: dimgrey;border-radius:7px ;'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert binary to Octal</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse h5 shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:lightgrey;">
+  To convert a binary number to an octal number, the following steps are involved:<br><br>
+  
+  <b>Step 1: Write Down the Binary Number</b><br>
+  Write the binary number that you want to convert.<br><br>
+
+  <b>Step 2: Group the Binary Digits</b><br>
+  Group the binary digits in sets of three, starting from the right. Add extra zeros to the left if necessary to complete the last group.<br><br>
+
+  <b>Step 3: Convert Each Group to Decimal</b><br>
+  Convert each group of three binary digits to its equivalent decimal value. This decimal value is the corresponding octal digit.<br><br>
+
+  <b>Step 4: Write the Octal Number</b><br>
+  Combine all the decimal values obtained from the groups. This will be the octal equivalent of the binary number.<br><br>
+
+  <b>Final Answer</b><br>
+  The number obtained in the previous step is the octal equivalent of the binary number.
+</div>
+
+                          <div class="d-flex  text-white justify-content-between mt-3 shadow" style='background-color: dimgrey;border-radius:7px ;'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image/pic.png" alt="">
+                          </div>
+                   </div>
+                   </div>
+       
+            <div class="mb-3 mt-3">
+                <label for="binaryInput" class="form-label h5">Enter a Binary Number:</label>
+                <input type="text" id="bi" class="form-control" placeholder="e.g., 1010101"style='height:45px;border:1px outset black;background:#e9e6e2;'>
+            </div>
+            <button id="convertBtnnnnnn" class="btn btn-primary w-100" style='background:#c1c2ad;border:2px inset black;color:black;font-weight:bold ;'>Convert to Octal</button>
+            <div id="li" class="mt-4" ></div>
+        </div>
+    </div>
+        <!-- //------------------binary to decimal--------------------------------- -->
+          <div id="binaryToDecimal" class="converter-card card p-4">
+             <div class="card-header  text-white" style='background:slategrey;'>
+                <h2 class="text-center ">Binary to Decimal Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#627e8b;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px; '>What is Binary no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:lightgrey ;">
+                           A binary number is a number expressed in the binary numeral system, which uses only two digits: 0 and 1. This system is also known as base-2.
+                          </div>
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#627e8b;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'> What is Decimal NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-3 " id="collapseExample4" style="font-style: italic;background-color:lightgrey ;">
+                         Decimal Numbering System (Base 10): In the decimal system, numbers are
+represented using ten digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9. Each digit has a place
+value of 10 raised to a power depending on its position in the number.
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#627e8b;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert binary to Decimal</p>
+                            <button class="btn btn-dark  btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px;'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:lightgrey;">
+                          To convert a binary number to a decimal number the following steps are involved<br><br>Step 1: Write Down the Binary NumberWrite the binary number that you want to convert.
+
+<br>Step 2: Assign Positional Values Assign a positional value to each digit in the binary number, starting from the rightmost digit (which is at position 0) to the leftmost digit. 
+
+<br>Step 3: Multiply Each Binary Digit by Its Positional Value
+Multiply each binary digit by the corresponding power of 2 assigned in the previous step.
+<br>Step 4: Sum the Results
+Add up all the products from the previous step to get the decimal equivalent of the binary number.
+<br>Final Answer
+The sum obtained in the previous step is the decimal equivalent of the binary number.
+                          </div>
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#627e8b;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image/pic1.png" alt="">
+                          </div>
+                   </div>
+                   </div>
+            <div class="mb-3">
+                <label for="binaryInputs" class="form-label">Enter a Binary Number:</label>
+                <input type="text" id="ayesha" class="form-control" placeholder="e.g., 1010101"style='height:45px;border:1px outset slategrey;background:#e9e6e2;'>
+            </div>
+            <button id="btnnning" class="btn btn-secondary w-100"style='background:slategrey;border:2px outset slategrey ;color:white;font-weight:bold ;'>Convert to Decimal</button>
+            <div id="ali" class="mt-4"></div>
+        </div>
+        <!-- //-------------------------binary to hexadecimal--------------------------------- -->
+        <div id="binaryTohexa" class="converter-card card p-4">
+        <div class="card-header  text-white" style='background:darkslategrey;'>
+                <h2 class="text-center ">Binary to HexaDecimal Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:darkslategrey;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px; '>What is Binary no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:lavenderblush;">
+                           A binary number is a number expressed in the binary numeral system, which uses only two digits: 0 and 1. This system is also known as base-2.
+                          </div>
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:darkslategrey;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'> What is HexaDecimal NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-3 " id="collapseExample4" style="font-style: italic;background-color:lavenderblush;">
+                        The hexadecimal number system is a type of number system, that has a base value equal to 16. It is also pronounced sometimes as ‘hex’. Hexadecimal numbers are represented by only 16 symbols. These symbols or values are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E and F. 
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:darkslategrey;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert binary to HexaDecimal</p>
+                            <button class="btn btn-dark  btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px;'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:lavenderblush;">
+                           For converting from binary to hexadecimal the following steps are involved:
+<br><br> Step 1.  Group the binary digits into sets of four, starting from the right. Add leading zeros if necessary to complete the leftmost group.<br>
+Step 2.  Convert each group of four binary digits to its equivalent decimal value.<br>
+Step3.  Convert each decimal value to its corresponding hexadecimal digit.<br>
+Step4.  Combine the hexadecimal digits to form the final hexadecimal number.
+
+                          </div>
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:darkslategrey;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image/pic3.png" class='w-100'>
+                          </div>
+                   </div>
+                   </div>
+        <div class="mb-3 mt-3">
+                <label for="binaryInput" class="form-label h5">Enter a Binary Number:</label>
+                <input type="text" id="binaryInputes" class="form-control" placeholder="e.g., 1010.1010"style="background:lightgrey ;border: 1px outset darkslategrey;height: 45px;">
+            </div>
+            <button id="converterBtn" class="btn btn-primary w-100"style='background-color:darkslategrey ;border:1px inset darkslategrey;color:lightgrey ;font-weight: bold;'>Convert to Hexadecimal</button>
+            <div id="resulted" class="mt-4"></div>
+        </div>
+        <!-- //-------------------------octal to binary----------------------------------- -->
+         <div id="octalToBinary" class="converter-card card p-4">
+           <div class="card-header  text-white" style='background-color:#36454f'>
+                <h2 class="text-center ">Octal to Binary Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#36454f;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px; '>What is Binary no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:#dcdbda;">
+                           A binary number is a number expressed in the binary numeral system, which uses only two digits: 0 and 1. This system is also known as base-2.
+                          </div>
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#36454f;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'> What is Octal NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-3 " id="collapseExample4" style="font-style: italic;background-color:#dcdbda;">
+                        The octal number system refers to the number system that uses eight as its base. The base 8 number system is a system where values are represented using numbers 0 to 7. For example, (21)8, (14)8.
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#36454f;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert Octal to binary </p>
+                            <button class="btn btn-dark  btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px;'></i>
+                            </button>
+                        </div>
+                        <div class="collapse h5 shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:lightgrey;">
+  To convert an octal number to a binary number, the following steps are involved:<br><br>
+
+  <b>Step 1: Write Down the Octal Number</b><br>
+  Write the octal number that you want to convert.<br><br>
+
+  <b>Step 2: Convert Each Octal Digit to Binary</b><br>
+  Convert each digit of the octal number into its corresponding 3-digit binary equivalent. If a binary equivalent is less than 3 digits, add leading zeros to make it 3 digits.<br><br>
+
+  <b>Step 3: Combine the Binary Digits</b><br>
+  Combine all the binary groups obtained from each octal digit to form the complete binary number.<br><br>
+
+  <b>Final Answer</b><br>
+  The binary number obtained by combining all groups is the binary equivalent of the octal number.
+</div>
+
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#36454f;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image/pic4.png" class='w-100'>
+                          </div>
+                   </div>
+                   </div>
+            <div class="mb-3 mt-3">
+                <label for="octalInput" class="form-label h5">Enter an Octal Number:</label>
+                <input type="text" id="octalInput" class="form-control" placeholder="e.g., 75.4"style="background:lightgrey ;border: 1px outset #36454f;height: 45px;">
+            </div>
+            <button id="convertingBtn" class="btn btn-primary w-100" style='background-color:#36454f;border:1px inset darkslategrey;color:lightgrey ;font-weight: bold;'>Convert to Binary</button>
+            <div id="ress" class="mt-4"></div>
+        </div>
+        <!-- //-------------------------octal to decimal---------------------------------- -->
+         <div id="octalToDecimal" class="converter-card card p-4">
+           <div class="card-header  text-white" style='background-color:#595e60'>
+                <h2 class="text-center ">Octal to Decimal Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#595e60;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px; '>What is Octal no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:#dcdbda;">
+                           The octal number system refers to the number system that uses eight as its base. The base 8 number system is a system where values are represented using numbers 0 to 7. For example, (21)8, (14)8.
+                          </div>
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#595e60;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'> What is Decimal NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-3 " id="collapseExample4" style="font-style: italic;background-color:#dcdbda;">
+                       Decimal Numbering System (Base 10): In the decimal system, numbers are
+represented using ten digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9. Each digit has a place
+value of 10 raised to a power depending on its position in the number.
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#595e60;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert Octal to Decimal</p>
+                            <button class="btn btn-dark  btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px;'></i>
+                            </button>
+                        </div>
+                        <div class="collapse h5 shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:lightgrey;">
+  To convert an octal number to a decimal number, the following steps are involved:<br><br>
+
+  <b>Step 1: Write Down the Octal Number</b><br>
+  Write the octal number that you want to convert.<br><br>
+
+  <b>Step 2: Assign Positional Values</b><br>
+  Assign a positional value to each digit in the octal number, starting from the rightmost digit (which is at position 0) to the leftmost digit. Each position represents a power of 8.<br><br>
+
+  <b>Step 3: Multiply Each Octal Digit by Its Positional Value</b><br>
+  Multiply each octal digit by its corresponding power of 8 assigned in the previous step.<br><br>
+
+  <b>Step 4: Sum the Results</b><br>
+  Add up all the products from the previous step to get the decimal equivalent of the octal number.<br><br>
+
+  <b>Final Answer</b><br>
+  The sum obtained in the previous step is the decimal equivalent of the octal number.
+</div>
+
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#595e60;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image/pic5.png" class='w-100'>
+                          </div>
+                   </div>
+                   </div>
+            <div class="mb-3 mt-3">
+                <label for="octalInput" class="form-label h5">Enter an Octal Number:</label>
+                <input type="text" id="Input" class="form-control" placeholder="e.g., 75.4"style='background-color: #dcdbda;border:1px groove #595e60;height:45px ; '>
+            </div>
+            <button id="resultBtn" class="btn btn-primary w-100"style='background-color:#595e60 ;border: 1px groove #595e60;'>Convert to Decimal</button>
+            <div id="output" class="mt-4"></div>
+        </div>
+         <!-- //-------------------------octal to hexadecimal---------------------------------- -->
+         <div id="octalToHexadecimal" class="converter-card card p-4">
+             <div class="card-header  text-white" style='background-color:#5c4e4e'>
+                <h2 class="text-center ">Octal to HexaDecimal Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#988686;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px; '>What is Octal no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5   shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:linen;">
+                          The octal number system refers to the number system that uses eight as its base. The base 8 number system is a system where values are represented using numbers 0 to 7. For example, (21)8, (14)8.
+                          </div>
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#988686;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'> What is HexaDecimal NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-3 " id="collapseExample4" style="font-style: italic;background-color:linen;">
+                        The hexadecimal number system is a type of number system, that has a base value equal to 16. It is also pronounced sometimes as ‘hex’. Hexadecimal numbers are represented by only 16 symbols. These symbols or values are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E and F. 
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#988686;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert binary to HexaDecimal</p>
+                            <button class="btn btn-dark  btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px;'></i>
+                            </button>
+                        </div>
+                        <div class="collapse h5 shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:linen;">
+  To convert an octal number to a hexadecimal number, the following steps are involved:<br><br>
+
+  <b>Step 1: Write Down the Octal Number</b><br>
+  Write the octal number that you want to convert.<br><br>
+
+  <b>Step 2: Convert the Octal Number to Decimal</b><br>
+  Convert the octal number to its decimal equivalent using the method of positional values (as described previously).<br><br>
+
+  <b>Step 3: Convert the Decimal Number to Hexadecimal</b><br>
+  Divide the decimal number by 16, noting the quotient and remainder. Repeat this until the quotient is 0. The hexadecimal digits are the remainders read in reverse order.<br><br>
+
+  <b>Final Answer</b><br>
+  The hexadecimal number obtained from the remainders is the hexadecimal equivalent of the octal number.
+</div>
+
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#988686;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image/pic6.png" class='w-100'>
+                          </div>
+                   </div>
+                   </div>
+            <div class="mb-3 mt-3">
+                <label for="Octalinput" class="form-label h5">Enter an Octal Number:</label>
+                <input type="text" id="input" class="form-control" placeholder="e.g., 75.4"style='background-color:linen ;border:1px solid #5c4e4e;height:45px'>
+            </div>
+            <button id="Btn" class="btn btn-primary w-100"style='background-color: #5c4e4e;border:1px inset grey'>Convert to Hexadecimal</button>
+            <div id="Output" class="mt-4"></div>
+        </div>
+        <!-- ///-----------------------decimal to hexadecimal------------------------------ -->
+         <div id="decimalToHexadecimal" class="converter-card card shadow p-4">
+           <div class="card-header  text-white" style='background-color:#988686'>
+                <h2 class="text-center "> Decimal to HexaDecimal Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#988686;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px; '>What is Decimal no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5   shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:linen;">
+                          Decimal Numbering System (Base 10): In the decimal system, numbers are
+represented using ten digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9. Each digit has a place
+value of 10 raised to a power depending on its position in the number.
+                          </div>
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#988686;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'> What is HexaDecimal NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-3 " id="collapseExample4" style="font-style: italic;background-color:linen;">
+                        The hexadecimal number system is a type of number system, that has a base value equal to 16. It is also pronounced sometimes as ‘hex’. Hexadecimal numbers are represented by only 16 symbols. These symbols or values are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E and F. 
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#988686;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert Decimal to HexaDecimal</p>
+                            <button class="btn btn-dark  btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px;'></i>
+                            </button>
+                        </div>
+                        <div class="collapse h5 shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:linen;">
+  To convert a decimal number to a hexadecimal number, the following steps are involved:<br><br>
+
+  <b>Step 1: Write Down the Decimal Number</b><br>
+  Write the decimal number that you want to convert.<br><br>
+
+  <b>Step 2: Divide by 16</b><br>
+  Divide the decimal number by 16. Record the quotient and the remainder.<br><br>
+
+  <b>Step 3: Repeat the Division</b><br>
+  Take the quotient from the previous step and divide it by 16 again. Record the new quotient and remainder. Continue this process until the quotient becomes 0.<br><br>
+
+  <b>Step 4: Convert Remainders to Hexadecimal</b><br>
+  Convert each remainder to its hexadecimal equivalent. Note that remainders 10 to 15 correspond to hexadecimal digits A to F.<br><br>
+
+  <b>Step 5: Write the Hexadecimal Number</b><br>
+  Combine all the hexadecimal digits obtained from the remainders in reverse order (from the last remainder obtained to the first).<br><br>
+
+  <b>Final Answer</b><br>
+  The hexadecimal number obtained is the hexadecimal equivalent of the decimal number.
+</div>
+
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#988686;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image/Decimal.jpg" class='w-100'>
+                          </div>
+                   </div>
+                   </div>
+            <div class="mb-3 mt-3">
+                <label for="decimalInput" class="form-label h5">Enter a Decimal Number:</label>
+                <input type="text" id="first" class="form-control " placeholder="e.g., 677.1"style='background-color:linen;height: 45px;border:1px solid #988686 ;'>
+            </div>
+            <button id="process" class="btn btn-outline-dark w-100" style='background-color:#988686 ;'>Convert to Hexadecimal</button>
+            <div id="last" class="mt-4"></div>
+        </div>
+        <!-- ///------------------decimal to binary------------------------------------- -->
+         <div id="decimalToBinary" class="converter-card card p-4">
+            <div class="card-header  text-white" style='background:slategrey;'>
+                <h2 class="text-center "> Decimal to Binary Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#627e8b;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px; '>What is Binary no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:lightgrey ;">
+                           A binary number is a number expressed in the binary numeral system, which uses only two digits: 0 and 1. This system is also known as base-2.
+                          </div>
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#627e8b;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'> What is Decimal NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-3 " id="collapseExample4" style="font-style: italic;background-color:lightgrey ;">
+                         Decimal Numbering System (Base 10): In the decimal system, numbers are
+represented using ten digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9. Each digit has a place
+value of 10 raised to a power depending on its position in the number.
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#627e8b;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert  Decimal to binary</p>
+                            <button class="btn btn-dark  btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px;'></i>
+                            </button>
+                        </div>
+                       <div class="collapse h5 shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:linen;">
+  To convert a decimal number to a binary number, the following steps are involved:<br><br>
+
+  <b>Step 1: Write Down the Decimal Number</b><br>
+  Write the decimal number that you want to convert.<br><br>
+
+  <b>Step 2: Divide by 2</b><br>
+  Divide the decimal number by 2. Record the quotient and the remainder.<br><br>
+
+  <b>Step 3: Repeat the Division</b><br>
+  Take the quotient from the previous step and divide it by 2 again. Record the new quotient and remainder. Continue this process until the quotient becomes 0.<br><br>
+
+  <b>Step 4: Write the Binary Number</b><br>
+  Combine all the remainders obtained from the divisions in reverse order (from the last remainder obtained to the first).<br><br>
+
+  <b>Final Answer</b><br>
+  The binary number obtained is the binary equivalent of the decimal number.
+</div>
+
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#627e8b;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image/pic7.png" class='w-100'>
+                          </div>
+                   </div>
+                   </div>
+            <div class="mb-3 mt-3">
+                <label for="decimalInput" class="form-label h5">Enter a Decimal Number:</label>
+                <input type="text" id="one" class="form-control" placeholder="e.g., 677.1" style='background-color:lightgrey ;border:1px groove grey ;height:45px'>
+            </div>
+            <button id="Btned" class="btn  w-100" style='background-color:slategrey ;color:white ;'>Convert to Binary</button>
+            <div id="lasted" class="mt-4"></div>
+        </div>
+        <!-- //-------------------------decimal to octal---------------------------- -->
+        <!-- ///-------------------------------decimal to octal-------------------------- -->
+        <div id="decimalToOctal" class="converter-card card p-4">
+            <div class="card-header  text-white" style='background:slategrey;'>
+                <h2 class="text-center "> Decimal to Octal Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#627e8b;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px; '>What is Octal no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:lightgrey ;">
+                           The octal number system refers to the number system that uses eight as its base. The base 8 number system is a system where values are represented using numbers 0 to 7. For example, (21)8, (14)8.
+                          </div>
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#627e8b;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'> What is Decimal NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-3 " id="collapseExample4" style="font-style: italic;background-color:lightgrey ;">
+                         Decimal Numbering System (Base 10): In the decimal system, numbers are
+represented using ten digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9. Each digit has a place
+value of 10 raised to a power depending on its position in the number.
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:#627e8b;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert  Decimal to Octal</p>
+                            <button class="btn btn-dark  btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px;'></i>
+                            </button>
+                        </div>
+                       <div class="collapse h5 shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:lightgrey;">
+  To convert a decimal number to an octal number, the following steps are involved:<br><br>
+
+  <b>Step 1: Write Down the Decimal Number</b><br>
+  Write the decimal number that you want to convert.<br><br>
+
+  <b>Step 2: Divide by 8</b><br>
+  Divide the decimal number by 8. Record the quotient and the remainder.<br><br>
+
+  <b>Step 3: Repeat the Division</b><br>
+  Take the quotient from the previous step and divide it by 8 again. Record the new quotient and remainder. Continue this process until the quotient becomes 0.<br><br>
+
+  <b>Step 4: Write the Octal Number</b><br>
+  Combine all the remainders obtained from the divisions in reverse order (from the last remainder obtained to the first).<br><br>
+
+  <b>Final Answer</b><br>
+  The octal number obtained is the octal equivalent of the decimal number.
+</div>
+
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:#627e8b;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image/pic8.png" class='w-100'>
+                          </div>
+                   </div>
+                   </div>
+            <div class="mb-3 mt-3">
+                <label for="decimalInput" class="form-label h5">Enter a Decimal Number:</label>
+                <input type="text" id="myinput" class="form-control" placeholder="e.g., 677.1"style='background-color:lightgrey ;border:1px groove grey ;height:45px'>
+            </div>
+            <button id="myBtn" class="btn btn-primary w-100" style='background-color:grey ;color:white'>Convert to Octal</button>
+            <div id="myOutput" class="mt-4"></div>
+        </div>
+<!-- /////////////-----------------------hexadecimal to binary----------------------- -->
+<div id="hexToBinary" class="converter-card card shadow p-4">
+            <div class="card-header  text-white" style='background:darkslategrey;'>
+                <h2 class="text-center "> HexaDecimal to Binary Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:darkslategrey;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px; '>What is Binary no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:lavenderblush;">
+                           A binary number is a number expressed in the binary numeral system, which uses only two digits: 0 and 1. This system is also known as base-2.
+                          </div>
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:darkslategrey;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'> What is HexaDecimal NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-3 " id="collapseExample4" style="font-style: italic;background-color:lavenderblush;">
+                        The hexadecimal number system is a type of number system, that has a base value equal to 16. It is also pronounced sometimes as ‘hex’. Hexadecimal numbers are represented by only 16 symbols. These symbols or values are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E and F. 
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex shadow text-white justify-content-between" style='background-color:darkslategrey;border-radius:7px'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert  HexaDecimal to binary</p>
+                            <button class="btn btn-dark  btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px;'></i>
+                            </button>
+                        </div>
+                        <div class="collapse h5 shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:lavenderblush;">
+  To convert a hexadecimal number to a binary number, the following steps are involved:<br><br>
+
+  <b>Step 1: Write Down the Hexadecimal Number</b><br>
+  Write the hexadecimal number that you want to convert.<br><br>
+
+  <b>Step 2: Convert Each Hexadecimal Digit to Binary</b><br>
+  Convert each digit of the hexadecimal number into its corresponding 4-digit binary equivalent. If a binary equivalent is less than 4 digits, add leading zeros to make it 4 digits.<br><br>
+
+  <b>Step 3: Combine the Binary Digits</b><br>
+  Combine all the binary groups obtained from each hexadecimal digit to form the complete binary number.<br><br>
+
+  <b>Final Answer</b><br>
+  The binary number obtained by combining all groups is the binary equivalent of the hexadecimal number.
+</div>
+
+                          <div class="d-flex shadow text-white justify-content-between mt-3" style='background-color:darkslategrey;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image/pic9.png" class='w-100'>
+                          </div>
+                   </div>
+                   </div>
+            <div class="mb-3 mt-3">
+                <label for="hexInput" class="form-label h5">Enter a Hexadecimal Number:</label>
+                <input type="text" id="firsted" class="form-control" placeholder="e.g., 2A7.9F">
+            </div>
+            <button id="processedd" class="btn btn-outline-dark w-100">Convert to Binary</button>
+            <div id="lasting" class="mt-4"></div>
+        </div>
+        <!-- ///------------------------hexadecimal to octal------------------- -->
+        <div id="hexToOctal" class="converter-card card shadow p-4">
+            <div class="card-body ">
+                    <div class="card-header " style='background-color: lightgrey;color:darkslategrey;border:1px groove darkslategrey ;'>
+                <h2 class="text-center ">Hexadecimal to Octal Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex  text-white justify-content-between shadow"style='background-color: dimgrey;border-radius:7px ;'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>What is HexaDecimal no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:lightgrey ;">
+                          The hexadecimal number system is a type of number system, that has a base value equal to 16. It is also pronounced sometimes as ‘hex’. Hexadecimal numbers are represented by only 16 symbols. These symbols or values are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E and F. 
+                          </div>
+                          <div class="d-flex shadow  text-white justify-content-between mt-3"style='background-color: dimgrey;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px; ;'> What is Octal NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-2 " id="collapseExample4" style='background-color:lightgrey ;'>
+                          The octal number system refers to the number system that uses eight as its base. The base 8 number system is a system where values are represented using numbers 0 to 7. For example, (21)8, (14)8.
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex  text-white justify-content-between shadow"style='background-color: dimgrey;border-radius:7px ;'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert Hexadecimal to Octal</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse h5 shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:lightgrey;">
+  To convert a hexadecimal number to an octal number, the following steps are involved:<br><br>
+
+  <b>Step 1: Write Down the Hexadecimal Number</b><br>
+  Write the hexadecimal number that you want to convert.<br><br>
+
+  <b>Step 2: Convert the Hexadecimal Number to Decimal</b><br>
+  Convert the hexadecimal number to its decimal equivalent using the method of positional values.<br><br>
+
+  <b>Step 3: Convert the Decimal Number to Octal</b><br>
+  Divide the decimal number by 8, noting the quotient and remainder. Repeat this process until the quotient is 0. The octal digits are the remainders read in reverse order.<br><br>
+
+  <b>Final Answer</b><br>
+  The octal number obtained from the remainders is the octal equivalent of the hexadecimal number.
+</div>
+
+                          <div class="d-flex  text-white justify-content-between mt-3 shadow" style='background-color: dimgrey;border-radius:7px ;'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image\pic10htoo.png" class='w-100'>
+                          </div>
+                   </div>
+                   </div>
+       
+            <div class="mb-3 mt-3">
+                <label for="hexInput" class="form-label h5">Enter a Hexadecimal Number:</label>
+                <input type="text" id="thisinput" class="form-control" placeholder="e.g., 2A7.9F"style='height:45px;border:1px outset black;background:#e9e6e2;'>
+            </div>
+            <button id="thisprocess" class="btn btn-outline-secondary w-100"style='background:#c1c2ad;border:2px inset black;color:black;font-weight:bold ;'>Convert to Octal</button>
+            <div id="thislast" class="mt-4"></div>
+        </div>
+    </div>
+        <!-- //-------------------hexadecimal to decimal----------------------------- -->
+        <div id="hexToDecimal" class="converter-card card shadow p-4">
+            <div class="card-body ">
+                    <div class="card-header text-white " style='background-color: dimgrey;;border:1px groove darkslategrey ;'>
+                <h2 class="text-center ">HexaDecimal to Decimal Converter with Step-by-Step Explanation</h2></div>
+                <div class="row">
+                <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex  text-white justify-content-between shadow"style='background-color: dimgrey;border-radius:7px ;'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>What is Decimal no</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon3" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                        <div class="collapse  h5  shadow px-3 py-2" id="collapseExample3" style="font-style: italic;background-color:lightgrey ;">
+                             Decimal Numbering System (Base 10): In the decimal system, numbers are
+represented using ten digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9. Each digit has a place
+value of 10 raised to a power depending on its position in the number.
+                          </div>
+                          <div class="d-flex shadow  text-white justify-content-between mt-3"style='background-color: dimgrey;border-radius:7px'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px; ;'> What is HexaDecimal  NO</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon4" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5 px-3 shadow py-2 " id="collapseExample4" style='background-color:lightgrey ;'>
+                          The hexadecimal number system is a type of number system, that has a base value equal to 16. It is also pronounced sometimes as ‘hex’. Hexadecimal numbers are represented by only 16 symbols. These symbols or values are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E and F. 
+                          </div>
+                   </div>
+                   <div class="col-md-6 mt-4">
+                        <!-- First Collapsible Section -->
+                        <div class="d-flex  text-white justify-content-between shadow"style='background-color: dimgrey;border-radius:7px ;'>
+                            <p  class='h5'style='padding-top:18px;padding-left:12px '>Steps to Convert Hexadecimal  to decimal</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample1">
+                                <i class="bi bi-plus" id="toggleIcon5" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                       <div class="collapse h5 shadow px-5 py-2" id="collapseExample5" style="font-style: italic;background-color:lightgrey;">
+  To convert a hexadecimal number to a decimal number, the following steps are involved:<br><br>
+
+  <b>Step 1: Write Down the Hexadecimal Number</b><br>
+  Write the hexadecimal number that you want to convert.<br><br>
+
+  <b>Step 2: Assign Positional Values</b><br>
+  Assign a positional value to each digit in the hexadecimal number, starting from the rightmost digit (which is at position 0) to the leftmost digit. Each position represents a power of 16.<br><br>
+
+  <b>Step 3: Convert Hexadecimal Digits to Decimal</b><br>
+  Convert each hexadecimal digit to its decimal equivalent. Note that hexadecimal digits 10 to 15 correspond to decimal values 10 to 15 (A to F).<br><br>
+
+  <b>Step 4: Multiply Each Hexadecimal Digit by Its Positional Value</b><br>
+  Multiply each decimal equivalent of the hexadecimal digit by its corresponding power of 16 assigned in the previous step.<br><br>
+
+  <b>Step 5: Sum the Results</b><br>
+  Add up all the products from the previous step to get the decimal equivalent of the hexadecimal number.<br><br>
+
+  <b>Final Answer</b><br>
+  The sum obtained in the previous step is the decimal equivalent of the hexadecimal number.
+</div>
+
+                          <div class="d-flex  text-white justify-content-between mt-3 shadow" style='background-color: dimgrey;border-radius:7px ;'>
+                            <p class='h5'style='padding-top:18px;padding-left:12px'>Example</p>
+                            <button class="btn btn-dark btn-sm"  data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample2">
+                                <i class="bi bi-plus" id="toggleIcon6" style='font-size:23px'></i>
+                            </button>
+                        </div>
+                         <div class="collapse  h5" id="collapseExample6">
+                           <img src="image\hex.webp" class='w-100'>
+                          </div>
+                   </div>
+                   </div>
+            <div class="mb-3 mt-3">
+                <label for="hexInput" class="form-label h5">Enter a Hexadecimal Number:</label>
+                <input type="text" id="ones" class="form-control" placeholder="e.g., 2A7.9F"style='height:45px;border:1px outset black;background:#e9e6e2;'>
+            </div>
+            <button id="hundred" class="btn btn-outline-dark w-100"style='background:#c1c2ad;border:2px inset black;color:black;font-weight:bold ;'>Convert to Decimal</button>
+            <div id="tens" class="mt-4"></div>
+        </div>
+        
+        </div>
+         </div>
+        </div>
+
+    </div>
+
+    <script>
+    $(document).ready(function () {
+        const conversionOptions = {
+            binary: ["Octal", "Decimal", "Hexadecimal"],
+            octal: ["Binary", "Decimal", "Hexadecimal"],
+            decimal: ["Binary", "Octal", "Hexadecimal"],
+            hexadecimal: ["Binary", "Octal", "Decimal"]
+        };
+
+        // Hide all conversion sections initially
+        $(".converter-card").hide();
+
+        // Populate the options for the second dropdown based on the first dropdown
+        $('#op1').change(function () {
+            const selectedValue = $(this).val();
+            const options = conversionOptions[selectedValue] || [];
+
+            $('#op2').empty();
+            options.forEach(option => {
+                $('#op2').append(new Option(option, option.toLowerCase()));
+            });
+
+            updateVisibleSection(); // Update the visible conversion section based on selected options
+        });
+
+        $('#op2').change(updateVisibleSection); // Update the visible conversion section based on selected options
+
+        // Initial population of the second dropdown and setting the visible section
+        $('#op1').trigger('change');
+
+        function updateVisibleSection() {
+            const fromValue = $('#op1').val();
+            const toValue = $('#op2').val();
+
+            $(".converter-card").hide();
+
+            if (fromValue === "binary" && toValue === "octal") {
+                $("#binaryToOctal").show();
+            } else if (fromValue === "binary" && toValue === "decimal") {
+                $("#binaryToDecimal").show();
+            }
+            else if (fromValue === "binary" && toValue === "hexadecimal") {
+                $("#binaryTohexa").show();
+            }
+             else if (fromValue === "octal" && toValue === "binary") {
+                $("#octalToBinary").show();
+            }
+            else if (fromValue === "octal" && toValue === "decimal") {
+                $("#octalToDecimal").show();
+            }else if (fromValue === "octal" && toValue === "hexadecimal") {
+                $("#octalToHexadecimal").show();
+            }else if (fromValue === "decimal" && toValue === "hexadecimal") {
+                $("#decimalToHexadecimal").show();
+            }
+             else if (fromValue === "decimal" && toValue === "binary") {
+                $("#decimalToBinary").show();
+            }else if (fromValue === "decimal" && toValue === "octal") {
+                $("#decimalToOctal").show();
+            }else if (fromValue === "hexadecimal" && toValue === "binary") {
+                $("#hexToBinary").show();
+            }else if (fromValue === "hexadecimal" && toValue === "octal") {
+                $("#hexToOctal").show();
+            }else if (fromValue === "hexadecimal" && toValue === "decimal") {
+                $("#hexToDecimal").show();
+            }
+             
+
+        }
+        $("#convertingBtn").click(function () {
+            // Clear previous alerts
+            $("#ress").empty();
+
+            // Get and clean input
+            let octal = $("#octalInput").val().trim();
+
+            // Validate the input (only digits 0-7 and optional decimal)
+            if (!/^[0-7]+(\.[0-7]+)?$/.test(octal)) {
+                $("#ress").append("<div class='alert alert-danger'>Please enter a valid octal number.</div>");
+                return;
+            }
+
+            // Split into integer and fractional parts
+            let [integerPart, fractionalPart] = octal.split(".");
+            if (!integerPart) integerPart = "0";
+            if (!fractionalPart) fractionalPart = "";
+
+            // Step 1: Explain the octal system
+            let stepsHtml = `<div class="alert alert-info"><strong>Step 1: Understand the Octal Number System:</strong><br>`;
+            stepsHtml += `The octal number system is base-8, meaning it uses digits from 0 to 7.<br>`;
+            stepsHtml += `Each digit in an octal number can be directly converted to a 3-digit binary equivalent since 2<sup>3</sup> = 8.</div>`;
+
+            // Step 2: Convert each octal digit to binary
+            let binaryInteger = integerPart.split("").map(digit => parseInt(digit, 8).toString(2).padStart(3, "0")).join(" ");
+            let binaryFraction = fractionalPart.split("").map(digit => parseInt(digit, 8).toString(2).padStart(3, "0")).join(" ");
+
+            stepsHtml += `<div class="alert alert-info"><strong>Step 2: Convert Each Octal Digit to Binary:</strong><br>`;
+            stepsHtml += `${integerPart.split("").map(digit => `${digit} in octal is ${parseInt(digit, 8).toString(2).padStart(3, "0")} in binary.`).join("<br>")}`;
+            if (fractionalPart) {
+                stepsHtml += `<br>${fractionalPart.split("").map(digit => `${digit} in the fractional part is ${parseInt(digit, 8).toString(2).padStart(3, "0")} in binary.`).join("<br>")}`;
+            }
+            stepsHtml += `</div>`;
+
+            // Step 3: Combine the binary groups together
+            stepsHtml += `<div class="alert alert-info"><strong>Step 3: Write the Binary Groups Together:</strong><br>`;
+            stepsHtml += `Integer part: ${integerPart} in octal becomes ${binaryInteger.replace(/ /g, "")} in binary.<br>`;
+            if (fractionalPart) {
+                stepsHtml += `Fractional part: ${fractionalPart} in octal becomes ${binaryFraction.replace(/ /g, "")} in binary.`;
+            }
+            stepsHtml += `</div>`;
+
+            // Step 4: Combine the integer and fractional parts
+            let finalBinary = binaryInteger.replace(/ /g, "") + (fractionalPart ? `.${binaryFraction.replace(/ /g, "")}` : "");
+            stepsHtml += `<div class="alert alert-info"><strong>Step 4: Combine the Integer and Fractional Parts:</strong><br>`;
+            stepsHtml += `The final binary representation of ${octal} in octal is:<br><strong>${finalBinary}</strong></div>`;
+
+            // Append the result
+            let resultHtml = `
+                <div class="result-box mt-4">
+                    <span class="delete-btn text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                    <h5>Result for: ${octal}</h5>
+                    ${stepsHtml}
+                    <div class="result mt-3">Final Binary Value: <strong>(${finalBinary})<sub>2</sub></strong></div>
+                </div>
+            `;
+            $("#ress").append(resultHtml);
+
+            // Clear the input field after displaying the result
+            $("#octalInput").val("");
+
+            // Handle delete button click
+            $(".delete-btn").last().click(function () {
+                $(this).closest(".result-box").remove();
+            });
+        });
+       
+
+
+        // Conversion logic for Binary to Octal
+        $("#convertBtnnnnnn").click(function () {
+            let binary = $("#bi").val().trim().replace(/\s+/g, '');
+             $("#bi").val("");
+              $("#li").empty();
+
+            if (!/^[01]+(\.[01]+)?$/.test(binary)) {
+                $("#li").append("<div class='alert alert-danger'>Please enter a valid binary number.</div>");
+                return;
+            }
+
+            let [binaryInteger, binaryFraction] = binary.split(".");
+
+            // Decimal conversion logic
+            let decimalInteger = 0;
+            let stepsDecimalInteger = [];
+            let explanationDecimalInteger = `<div class="alert alert-info"><strong>Decimal Conversion (Integer Part):</strong><br>`;
+
+            for (let i = 0; i < binaryInteger.length; i++) {
+                let bit = parseInt(binaryInteger[i]);
+                let power = binaryInteger.length - 1 - i;
+                let stepResult = bit * Math.pow(2, power);
+                decimalInteger += stepResult;
+                stepsDecimalInteger.push({
+                    step: `${bit} × 2^${power} = ${stepResult}`,
+                    explanation: `The bit ${bit} is multiplied by 2 raised to the power of ${power}, which equals ${stepResult}.`
+                });
+            }
+
+            for (let j = 0; j < stepsDecimalInteger.length; j++) {
+                explanationDecimalInteger += `<div class="step">${stepsDecimalInteger[j].step}<br>${stepsDecimalInteger[j].explanation}</div>`;
+            }
+            explanationDecimalInteger += `<div class="alert alert-success">Adding all the results gives the final decimal value (integer part): <strong>${decimalInteger}</strong></div><br>`;
+
+            let decimalFraction = 0;
+            let explanationDecimalFraction = "";
+            if (binaryFraction) {
+                explanationDecimalFraction = `<div class="alert alert-info"><strong>Decimal Conversion (Fractional Part):</strong><br>`;
+                for (let i = 0; i < binaryFraction.length; i++) {
+                    let bit = parseInt(binaryFraction[i]);
+                    let power = -(i + 1);
+                    let stepResult = bit * Math.pow(2, power);
+                    decimalFraction += stepResult;
+                    explanationDecimalFraction += `<div class="step">${bit} × 2^${power} = ${stepResult}</div>`;
+                }
+                explanationDecimalFraction += `<div class="alert alert-success">The decimal equivalent of the fractional part is: <strong>${decimalFraction}</strong></div><br>`;
+            }
+
+            // Octal conversion logic
+            let octalInteger = "";
+            let explanationOctalInteger = `<div class="alert alert-info"><strong>Octal Conversion (Integer Part):</strong><br>`;
+            let factorizationSteps = [];
+            let currentDecimalInteger = decimalInteger;
+
+            if (currentDecimalInteger === 0) {
+                octalInteger = "0";
+                explanationOctalInteger += `<div class="alert alert-success">The octal equivalent of decimal 0 is <strong>0</strong>.</div>`;
+            } else {
+                while (currentDecimalInteger > 0) {
+                    let quotient = Math.floor(currentDecimalInteger / 8);
+                    let remainder = currentDecimalInteger % 8;
+                    factorizationSteps.push({ quotient, remainder, currentDecimalInteger });
+                    octalInteger = remainder + octalInteger;
+                    currentDecimalInteger = quotient;
+                }
+
+                explanationOctalInteger += "<div class='factorization-diagram'>";
+                explanationOctalInteger += `
+                    <div class="divider">
+                        ${factorizationSteps.map(step => `8<br>`).join("")}
+                    </div>
+                    <div>
+                        ${factorizationSteps.map(step => `${step.currentDecimalInteger} - ${step.remainder}<br>`).join("")}
+                    </div>
+                `;
+                explanationOctalInteger += `</div><div class="remainder-arrow">⬆️ Follow the remainders up to get the final octal number.</div>`;
+                explanationOctalInteger += `<div class="alert alert-success">Reading the remainders from bottom to top gives the final octal value (integer part): <strong>${octalInteger}</strong></div>`;
+            }
+
+            let octalFraction = "";
+            let explanationOctalFraction = "";
+            if (decimalFraction) {
+                explanationOctalFraction = `<div class="alert alert-info"><strong>Octal Conversion (Fractional Part):</strong><br>`;
+                let currentDecimalFraction = decimalFraction;
+                let stepsOctalFraction = [];
+
+                for (let i = 0; i < 5 && currentDecimalFraction !== 0; i++) {
+                    let multipliedValue = currentDecimalFraction * 8;
+                    let octalDigit = Math.floor(multipliedValue);
+                    stepsOctalFraction.push({
+                        multipliedValue: multipliedValue.toFixed(5),
+                        octalDigit: octalDigit,
+                        explanation: `Multiplying the current fraction by 8 gives ${multipliedValue.toFixed(5)}, from which the integer part is ${octalDigit}.`
+                    });
+
+                    explanationOctalFraction += `<div class="step">${stepsOctalFraction[i].multipliedValue} × 8 = ${stepsOctalFraction[i].octalDigit}<br>${stepsOctalFraction[i].explanation}</div>`;
+                    octalFraction += octalDigit;
+                    currentDecimalFraction = multipliedValue - octalDigit;
+                }
+
+                explanationOctalFraction += `<div class="alert alert-success">The final octal value (fractional part) is: <strong>${octalFraction}</strong></div>`;
+            }
+
+            let finalOctal = octalInteger + (octalFraction ? `.${octalFraction}` : "");
+            let resultHtml = `
+                <div class="result-box mt-4" style="display: none;">
+                    <span class="delete-btn text-danger">&times;</span>
+                    <h5>Result for: ${binary}</h5>
+                    ${explanationDecimalInteger}
+                    ${explanationDecimalFraction}
+                    ${explanationOctalInteger}
+                    ${explanationOctalFraction}
+                    <div class="result mt-3">Final Octal Value: <strong>(${finalOctal})<sub>8</sub></strong></div>
+                </div>
+            `;
+            $("#li").append(resultHtml);
+
+            // Animate the result display
+            $(".result-box").last().slideDown(); // Use slideDown animation
+
+            // Handle delete button click
+            $(".delete-btn").last().click(function () {
+                $(this).closest(".result-box").slideUp(function () {
+                    $(this).remove();
+                });
+            });
+        });
+///////////-------------hexadecimal to binay------------------------------
+ $("#processedd").click(function () {
+            $("#lasting").empty(); // Clear previous alerts
+
+            let hex = $("#firsted").val().trim().toUpperCase();
+
+            if (!/^[0-9A-F]+(\.[0-9A-F]+)?$/.test(hex)) {
+                $("#lasting").append("<div class='alert alert-danger'>Please enter a valid hexadecimal number.</div>");
+                return;
+            }
+
+            // Split the hexadecimal number into whole and fractional parts
+            let [wholePart, fractionalPart] = hex.split('.');
+
+            // Conversion mapping for hex to binary
+            const hexToBinaryMapping = {
+                '0': '0000', '1': '0001', '2': '0010', '3': '0011',
+                '4': '0100', '5': '0101', '6': '0110', '7': '0111',
+                '8': '1000', '9': '1001', 'A': '1010', 'B': '1011',
+                'C': '1100', 'D': '1101', 'E': '1110', 'F': '1111'
+            };
+
+            // Convert the whole part
+            let wholeBinary = '';
+            for (let digit of wholePart) {
+                wholeBinary += hexToBinaryMapping[digit];
+            }
+
+            // Convert the fractional part (if it exists)
+            let fractionalBinary = '';
+            if (fractionalPart) {
+                for (let digit of fractionalPart) {
+                    fractionalBinary += hexToBinaryMapping[digit];
+                }
+            }
+
+            // Generate step-by-step explanation
+            let stepsHtml = `<div class="alert alert-infoo"><strong>Step-by-Step Explanation:</strong><br>`;
+            stepsHtml += `<strong>Step 1:</strong> Convert each hexadecimal digit to its 4-bit binary equivalent:<br><br>`;
+
+            // Whole part conversion
+            stepsHtml += `<strong>Whole Part:</strong><br>`;
+            stepsHtml += `<table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Hexadecimal Digit</th>
+                                    <th>Binary Equivalent</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+            for (let digit of wholePart) {
+                stepsHtml += `<tr>
+                                <td>${digit}</td>
+                                <td>${hexToBinaryMapping[digit]}</td>
+                              </tr>`;
+            }
+            stepsHtml += `</tbody></table>`;
+            stepsHtml += `The combined whole part in binary is: <strong>${wholeBinary}</strong><br><br>`;
+
+            // Fractional part conversion (if it exists)
+            if (fractionalPart) {
+                stepsHtml += `<strong>Fractional Part:</strong><br>`;
+                stepsHtml += `<table class="table table-bordered table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Hexadecimal Digit</th>
+                                        <th>Binary Equivalent</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+                for (let digit of fractionalPart) {
+                    stepsHtml += `<tr>
+                                    <td>${digit}</td>
+                                    <td>${hexToBinaryMapping[digit]}</td>
+                                  </tr>`;
+                }
+                stepsHtml += `</tbody></table>`;
+                stepsHtml += `The combined fractional part in binary is: <strong>.${fractionalBinary}</strong><br><br>`;
+            }
+
+            // Combine whole and fractional parts
+            let finalBinaryResult = fractionalPart ? `${wholeBinary}.${fractionalBinary}` : wholeBinary;
+            stepsHtml += `The final binary value is: <strong>${finalBinaryResult}</strong></div>`;
+
+            let resultHtml = `
+                <div class="resultt-box mt-4">
+                    <span class="deleted-btn text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                    <h5>Result for: ${hex}</h5>
+                    ${stepsHtml}
+                    <div class="result mt-3">Final Binary Value: <strong>(${finalBinaryResult})<sub>2</sub></strong></div>
+                </div>
+            `;
+            $("#lasting").append(resultHtml);
+            $("#firsted").val(""); // Clear the input field
+
+            // Add delete functionality
+            $(".deleted-btn").last().click(function () {
+                $(this).closest(".resultt-box").remove();
+            });
+        });
+
+///--------------------------decimal to Octal----------------------------------------------------
+ $("#myBtn").click(function () {
+            $("#myOutput").empty(); // Clear previous alerts
+
+            let decimal = $("#myinput").val().trim();
+
+            if (!/^\d+(\.\d+)?$/.test(decimal)) {
+                $("#myOutput").append("<div class='alert alert-danger'>Please enter a valid decimal number.</div>");
+                return;
+            }
+
+            let [integerPart, fractionalPart] = decimal.split(".");
+            integerPart = parseInt(integerPart);
+            fractionalPart = fractionalPart ? parseFloat("0." + fractionalPart) : 0;
+
+            // Convert integer part to octal
+            let integerOctal = integerPart.toString(8);
+
+            // Convert fractional part to octal
+            let fractionalOctal = "";
+            let fraction = fractionalPart;
+            while (fraction > 0 && fractionalOctal.length < 10) { // Limit the length to avoid infinite loops
+                fraction *= 8;
+                let digit = Math.floor(fraction);
+                fractionalOctal += digit.toString(8);
+                fraction -= digit;
+            }
+
+            let octalResult = fractionalPart ? `${integerOctal}.${fractionalOctal}` : integerOctal;
+
+            // Step-by-step explanation with tables and steps
+            let stepsHtml = `<div class="alert alert-info"><strong>Step-by-Step Explanation:</strong><br>`;
+
+            // Integer part conversion table
+            stepsHtml += `<strong>Step 1:</strong> Convert the integer part (${integerPart}) to octal.<br>`;
+            stepsHtml += `Divide the integer by 8 repeatedly and note the quotient and remainder:<br>`;
+            stepsHtml += `<table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Division Step</th>
+                                    <th>Quotient</th>
+                                    <th>Remainder</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+
+            let divisionSteps = [];
+            let currentValue = integerPart;
+            while (currentValue > 0) {
+                let remainder = currentValue % 8;
+                let quotient = Math.floor(currentValue / 8);
+                divisionSteps.push({
+                    step: `${currentValue} ÷ 8`,
+                    quotient: quotient,
+                    remainder: remainder
+                });
+                currentValue = quotient;
+            }
+
+            // Add steps to table
+            divisionSteps.forEach(step => {
+                stepsHtml += `<tr>
+                                <td>${step.step}</td>
+                                <td>${step.quotient}</td>
+                                <td>${step.remainder}</td>
+                              </tr>`;
+            });
+
+            stepsHtml += `</tbody></table>`;
+            stepsHtml += `Reading the remainder value from bottom to top gives the octal value<br><br>`;
+            stepsHtml += `The octal of the integer part is: <strong>${integerOctal}</strong><br><br>`;
+            
+
+            // Fractional part conversion explanation
+            if (fractionalPart) {
+                stepsHtml += `<strong>Step 2:</strong> Convert the fractional part (${fractionalPart}) to octal.<br>`;
+                stepsHtml += `Multiply the fractional part by 8 repeatedly and record the integer part of the product:<br>`;
+                stepsHtml += `<table class="table table-bordered table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Multiplication Step</th>
+                                        <th>Fraction × 8</th>
+                                        <th>Integer Part</th>
+                                        <th>New Fraction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+
+                let fractionSteps = [];
+                fraction = fractionalPart;
+                while (fraction > 0 && fractionSteps.length < 10) { // Limit steps for clarity
+                    let multiplied = fraction * 8;
+                    let integerPart = Math.floor(multiplied);
+                    let newFraction = multiplied - integerPart;
+                    fractionSteps.push({
+                        fraction: fraction.toFixed(2),
+                        multiplied: multiplied.toFixed(2),
+                        integerPart: integerPart,
+                        newFraction: newFraction.toFixed(2)
+                    });
+                    fraction = newFraction;
+                }
+
+                fractionSteps.forEach(step => {
+                    stepsHtml += `<tr>
+                                    <td>${step.fraction} × 8</td>
+                                    <td>${step.multiplied}</td>
+                                    <td>${step.integerPart}</td>
+                                    <td>${step.newFraction}</td>
+                                  </tr>`;
+                });
+
+                stepsHtml += `</tbody></table>`;
+                stepsHtml += `The octal of the fractional part is: <strong>${fractionalOctal}</strong><br><br>`;
+            }
+
+            // Final step
+            stepsHtml += `<strong>Step 3:</strong> Combine the integer and fractional parts to get the final octal value.<br>`;
+            stepsHtml += `The final octal value is: <strong>${octalResult}</strong></div>`;
+
+            let resultHtml = `
+                <div class="result-box mt-4">
+                    <span class="delete-btn text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                    <h5>Result for: ${decimal}</h5>
+                    ${stepsHtml}
+                    <div class="result mt-3">Final Octal Value: <strong>(${octalResult})<sub>8</sub></strong></div>
+                </div>
+            `;
+            $("#myOutput").append(resultHtml);
+            $("#myinput").val(""); // Clear the input field
+
+            $(".delete-btn").last().click(function () {
+                $(this).closest(".result-box").remove();
+            });
+        });
+//--------------------------decimal to binary------------------------------------------
+$("#Btned").click(function () {
+            $("#last").empty(); // Clear previous alerts
+
+            let decimal = $("#one").val().trim();
+
+            if (!/^\d+(\.\d+)?$/.test(decimal)) {
+                $("#lasted").append("<div class='alert alert-danger'>Please enter a valid decimal number.</div>");
+                return;
+            }
+
+            let [integerPart, fractionalPart] = decimal.split(".");
+            integerPart = parseInt(integerPart);
+            fractionalPart = fractionalPart ? parseFloat("0." + fractionalPart) : 0;
+
+            // Convert integer part to binary
+            let integerBinary = integerPart.toString(2);
+
+            // Convert fractional part to binary
+            let fractionalBinary = "";
+            let fraction = fractionalPart;
+            while (fraction > 0 && fractionalBinary.length < 10) { // Limit the length to avoid infinite loops
+                fraction *= 2;
+                if (fraction >= 1) {
+                    fractionalBinary += "1";
+                    fraction -= 1;
+                } else {
+                    fractionalBinary += "0";
+                }
+            }
+
+            let binaryResult = fractionalPart ? `${integerBinary}.${fractionalBinary}` : integerBinary;
+
+            // Step-by-step explanation with tables and steps
+            let stepsHtml = `<div class="alert alert-info"><strong>Step-by-Step Explanation:</strong><br>`;
+
+            // Integer part conversion table
+            stepsHtml += `<strong>Step 1:</strong> Convert the integer part (${integerPart}) to binary.<br>`;
+            stepsHtml += `Divide the integer by 2 repeatedly and note the quotient and remainder:<br>`;
+            stepsHtml += `<table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Division Step</th>
+                                    <th>Quotient</th>
+                                    <th>Remainder</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+
+            let divisionSteps = [];
+            let currentValue = integerPart;
+            while (currentValue > 0) {
+                let remainder = currentValue % 2;
+                let quotient = Math.floor(currentValue / 2);
+                divisionSteps.push({
+                    step: `${currentValue} ÷ 2`,
+                    quotient: quotient,
+                    remainder: remainder
+                });
+                currentValue = quotient;
+            }
+
+            // Add steps to table
+            divisionSteps.forEach(step => {
+                stepsHtml += `<tr>
+                                <td>${step.step}</td>
+                                <td>${step.quotient}</td>
+                                <td>${step.remainder}</td>
+                              </tr>`;
+            });
+
+            stepsHtml += `</tbody></table>`;
+            stepsHtml += `Reading the reminder value from bottom to top that gives a binary value<br><br>`;
+            stepsHtml += `The binary of the integer part is: <strong>${integerBinary}</strong><br><br>`;
+            
+
+            // Fractional part conversion explanation
+            if (fractionalPart) {
+                stepsHtml += `<strong>Step 2:</strong> Convert the fractional part (${fractionalPart}) to binary.<br>`;
+                stepsHtml += `Multiply the fractional part by 2 repeatedly and record the integer part of the product:<br>`;
+                stepsHtml += `<table class="table table-bordered table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Multiplication Step</th>
+                                        <th>Fraction × 2</th>
+                                        <th>Integer Part</th>
+                                        <th>New Fraction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+
+                let fractionSteps = [];
+                fraction = fractionalPart;
+                while (fraction > 0 && fractionSteps.length < 10) { // Limit steps for clarity
+                    let multiplied = fraction * 2;
+                    let integerPart = Math.floor(multiplied);
+                    let newFraction = multiplied - integerPart;
+                    fractionSteps.push({
+                        fraction: fraction.toFixed(2),
+                        multiplied: multiplied.toFixed(2),
+                        integerPart: integerPart,
+                        newFraction: newFraction.toFixed(2)
+                    });
+                    fraction = newFraction;
+                }
+
+                fractionSteps.forEach(step => {
+                    stepsHtml += `<tr>
+                                    <td>${step.fraction} × 2</td>
+                                    <td>${step.multiplied}</td>
+                                    <td>${step.integerPart}</td>
+                                    <td>${step.newFraction}</td>
+                                  </tr>`;
+                });
+
+                stepsHtml += `</tbody></table>`;
+                stepsHtml += `The binary of the fractional part is: <strong>${fractionalBinary}</strong><br><br>`;
+            }
+
+            // Final step
+            stepsHtml += `<strong>Step 3:</strong> Combine the integer and fractional parts to get the final binary value.<br>`;
+            stepsHtml += `The final binary value is: <strong>${binaryResult}</strong></div>`;
+
+            let resultHtml = `
+                <div class="result-box mt-4">
+                    <span class="delete-btn text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                    <h5>Result for: ${decimal}</h5>
+                    ${stepsHtml}
+                    <div class="result mt-3">Final Binary Value: <strong>(${binaryResult})<sub>2</sub></strong></div>
+                </div>
+            `;
+            $("#lasted").append(resultHtml);
+            $("#one").val(""); // Clear the input field
+
+            $(".delete-btn").last().click(function () {
+                $(this).closest(".result-box").remove();
+            });
+        });
+
+
+        // Conversion logic for Binary to Decimal
+        $("#btnnning").click(function () {
+            let binary = $("#ayesha").val().trim().replace(/\s+/g, '');
+            $("#ayesha").val("");
+              $("#ali").empty();
+
+            if (!/^[01]+(\.[01]+)?$/.test(binary)) {
+                $("#ali").append("<div class='alert alert-danger'>Please enter a valid binary number.</div>");
+                return;
+            }
+
+            let [binaryInteger, binaryFraction] = binary.split(".");
+
+            // Decimal conversion logic (integer part)
+            let decimalInteger = 0;
+            let stepsDecimalInteger = [];
+            let explanationDecimalInteger = `<div class="alert alert-info"><strong>Decimal Conversion (Integer Part):</strong><br>`;
+
+            for (let i = 0; i < binaryInteger.length; i++) {
+                let bit = parseInt(binaryInteger[i]);
+                let power = binaryInteger.length - 1 - i;
+                let stepResult = bit * Math.pow(2, power);
+                decimalInteger += stepResult;
+                stepsDecimalInteger.push({
+                    step: `${bit} × 2^${power} = ${stepResult}`,
+                    explanation: `The bit ${bit} is multiplied by 2 raised to the power of ${power}, which equals ${stepResult}.`
+                });
+            }
+
+            for (let j = 0; j < stepsDecimalInteger.length; j++) {
+                explanationDecimalInteger += `<div class="step">${stepsDecimalInteger[j].step}<br>${stepsDecimalInteger[j].explanation}</div>`;
+            }
+            explanationDecimalInteger += `<div class="alert alert-success">Adding all the results gives the final decimal value (integer part): <strong>${decimalInteger}</strong></div><br>`;
+
+            let decimalFraction = 0;
+            let explanationDecimalFraction = "";
+            if (binaryFraction) {
+                explanationDecimalFraction = `<div class="alert alert-info"><strong>Decimal Conversion (Fractional Part):</strong><br>`;
+                for (let i = 0; i < binaryFraction.length; i++) {
+                    let bit = parseInt(binaryFraction[i]);
+                    let power = -(i + 1);
+                    let stepResult = bit * Math.pow(2, power);
+                    decimalFraction += stepResult;
+                    explanationDecimalFraction += `<div class="step">${bit} × 2^${power} = ${stepResult}</div>`;
+                }
+                explanationDecimalFraction += `<div class="alert alert-success">The decimal equivalent of the fractional part is: <strong>${decimalFraction}</strong></div><br>`;
+            }
+
+            let finalDecimal = decimalInteger + (decimalFraction ? `.${decimalFraction.toString().split('.')[1]}` : "");
+            let resultHtml = `
+                <div class="result-box mt-4" style="display: none;">
+                    <span class="delete-btn text-danger">&times;</span>
+                    <h5>Result for: ${binary}</h5>
+                    ${explanationDecimalInteger}
+                    ${explanationDecimalFraction}
+                    <div class="result mt-3">Final Decimal Value: <strong>(${finalDecimal})<sub>10</sub></strong></div>
+                </div>
+            `;
+            $("#ali").append(resultHtml);
+
+            // Animate the result display
+            $(".result-box").last().slideDown(); // Use slideDown animation
+
+            // Handle delete button click
+            $(".delete-btn").last().click(function () {
+                $(this).closest(".result-box").slideUp(function () {
+                    $(this).remove();
+                });
+            });
+        });
+        ///binery to hexadencimal conversion
+
+        $("#converterBtn").click(function () {
+                // Remove spaces from the input
+                let binary = $("#binaryInputes").val().trim().replace(/\s+/g, '');
+                $("#binaryInputes").val("");
+              $("#resulted").empty();
+
+                // Validate the cleaned input
+                if (!/^[01]+(\.[01]+)?$/.test(binary)) {
+                    $("#resulted").append("<div class='alert alert-danger'>Please enter a valid binary number.</div>");
+                    return;
+                }
+
+                // Split the binary number into integer and fractional parts
+                let [binaryInteger, binaryFraction] = binary.split(".");
+                if (!binaryInteger) binaryInteger = "0";
+                if (!binaryFraction) binaryFraction = "";
+
+                // Helper function to group binary digits into sets of four, padding with zeros if needed
+                function groupBinaryDigits(binaryStr) {
+                    let paddedStr = binaryStr.padStart(Math.ceil(binaryStr.length / 4) * 4, '0');
+                    return paddedStr.match(/.{1,4}/g);
+                }
+
+                // Step 1: Group the integer part into sets of four digits
+                let groupedBinaryInteger = groupBinaryDigits(binaryInteger);
+                let stepsHtml = `<div class="alert alert-info"><strong>Step 1: Grouping Integer Part:</strong><br>`;
+                stepsHtml += groupedBinaryInteger.join(" ") + "</div>";
+
+                // Step 2: Convert each group to decimal
+                let decimalValues = [];
+                groupedBinaryInteger.forEach((group, index) => {
+                    let decimalValue = 0;
+                    let conversionSteps = [];
+                    for (let i = 0; i < group.length; i++) {
+                        let bit = parseInt(group[i]);
+                        let power = group.length - 1 - i;
+                        let result = bit * Math.pow(2, power);
+                        conversionSteps.push(`${bit} × 2^${power} = ${result}`);
+                        decimalValue += result;
+                    }
+                    stepsHtml += `<div class="alert alert-info"><strong>Step 2: Convert Group ${index + 1} to Decimal:</strong><br>`;
+                    stepsHtml += conversionSteps.join("<br>") + `<br><strong>Group Result:</strong> ${decimalValue}<br></div>`;
+                    decimalValues.push(decimalValue);
+                });
+
+                // Step 3: Convert the decimal values to hexadecimal
+                let hexadecimalDigits = decimalValues.map(decimal => decimal.toString(16).toUpperCase());
+                stepsHtml += `<div class="alert alert-info"><strong>Step 3: Convert Decimal to Hexadecimal:</strong><br>`;
+                hexadecimalDigits.forEach((hex, index) => {
+                    stepsHtml += `${decimalValues[index]} → ${hex}<br>`;
+                });
+                stepsHtml += "</div>";
+
+                // Combine the integer hexadecimal digits
+                let finalHexadecimalInteger = hexadecimalDigits.join("");
+
+                // Step 4: Handle fractional part if it exists
+                let finalHexadecimalFraction = "";
+                if (binaryFraction) {
+                    stepsHtml += `<div class="alert alert-info"><strong>Step 4: Handling Fractional Part:</strong></div>`;
+
+                    // Convert fractional binary to decimal
+                    let fractionalDecimal = 0;
+                    let conversionStepsFraction = [];
+                    for (let i = 0; i < binaryFraction.length; i++) {
+                        let bit = parseInt(binaryFraction[i]);
+                        let power = -(i + 1);
+                        let result = bit * Math.pow(2, power);
+                        fractionalDecimal += result;
+                        conversionStepsFraction.push(`${bit} × 2^${power} = ${result}`);
+                    }
+                    stepsHtml += `<div class="alert alert-info"><strong>Convert Fractional Binary to Decimal:</strong><br>`;
+                    stepsHtml += conversionStepsFraction.join("<br>") + `<br><strong>Total (Fractional Decimal):</strong> ${fractionalDecimal}</div>`;
+
+                    // Convert fractional decimal to hexadecimal
+                    let fraction = fractionalDecimal;
+                    let stepCount = 1;
+                    while (fraction > 0 && finalHexadecimalFraction.length < 10) { // Limit to 10 digits for precision
+                        fraction *= 16;
+                        let hexDigit = Math.floor(fraction);
+                        finalHexadecimalFraction += hexDigit.toString(16).toUpperCase();
+                        fraction -= hexDigit;
+                        stepsHtml += `<div class="alert alert-info"><strong>Step ${stepCount++}: Multiply Fractional Decimal by 16:</strong><br>`;
+                        stepsHtml += `New Fractional Decimal: ${fraction} × 16 = ${fraction * 16} → ${hexDigit} (Hexadecimal)`;
+                        stepsHtml += `</div>`;
+                    }
+
+                    stepsHtml += `<div class="alert alert-info"><strong>Convert Fractional Decimal to Hexadecimal:</strong><br>`;
+                    stepsHtml += `${fractionalDecimal} → ${finalHexadecimalFraction}</div>`;
+                }
+
+                // Step 5: Combine the integer and fractional hexadecimal parts
+                let finalHexadecimal = finalHexadecimalInteger + (finalHexadecimalFraction ? `.${finalHexadecimalFraction}` : "");
+
+                // Append final result without clearing the previous results
+                let resultHtml = `
+                    <div class="result-box mt-4">
+                        <span class="delete-btn text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                        <h5>Result for: ${binary}</h5>
+                        ${stepsHtml}
+                        <div class="result mt-3">Final Hexadecimal Value: <strong>(${finalHexadecimal})<sub>16</sub></strong></div>
+                    </div>
+                `;
+                $("#resulted").append(resultHtml);
+
+                // Handle delete button click
+                $(".delete-btn").last().click(function () {
+                    $(this).closest(".result-box").remove();
+                });
+            });
+//conversion octal to decimal
+ $("#resultBtn").click(function () {
+                // Clear previous alerts
+                $("#output").empty();
+
+                // Get and clean input
+                let octal = $("#Input").val().trim();
+
+                // Validate the input (only digits 0-7 and optional decimal)
+                if (!/^[0-7]+(\.[0-7]+)?$/.test(octal)) {
+                    $("#output").append("<div class='alert alert-danger'>Please enter a valid octal number.</div>");
+                    return;
+                }
+
+                // Split into integer and fractional parts
+                let [integerPart, fractionalPart] = octal.split(".");
+                if (!integerPart) integerPart = "0";
+                if (!fractionalPart) fractionalPart = "";
+
+                // Step 1: Explain the octal system
+                let stepsHtml = `<div class="alert alert-info"><strong>Step 1: Understand the Octal Number System:</strong><br>`;
+                stepsHtml += `The octal number system is base-8, meaning it uses digits from 0 to 7.<br>`;
+                stepsHtml += `To convert an octal number to decimal, each digit is multiplied by 8 raised to the power of its position from right to left (starting at 0).</div>`;
+
+                // Step 2: Convert integer part to decimal
+                let decimalInteger = 0;
+                stepsHtml += `<div class="alert alert-info"><strong>Step 2: Convert the Integer Part:</strong><br>`;
+                for (let i = 0; i < integerPart.length; i++) {
+                    let digit = parseInt(integerPart[i], 8);
+                    let power = integerPart.length - 1 - i;
+                    decimalInteger += digit * Math.pow(8, power);
+                    stepsHtml += `Digit: ${digit} × 8<sup>${power}</sup> = ${digit * Math.pow(8, power)}<br>`;
+                }
+                stepsHtml += `The integer part in decimal is: <strong>${decimalInteger}</strong></div>`;
+
+                // Step 3: Convert fractional part to decimal (if present)
+                let decimalFraction = 0;
+                if (fractionalPart) {
+                    stepsHtml += `<div class="alert alert-info"><strong>Step 3: Convert the Fractional Part:</strong><br>`;
+                    for (let i = 0; i < fractionalPart.length; i++) {
+                        let digit = parseInt(fractionalPart[i], 8);
+                        let power = -(i + 1);
+                        decimalFraction += digit * Math.pow(8, power);
+                        stepsHtml += `Digit: ${digit} × 8<sup>${power}</sup> = ${digit * Math.pow(8, power)}<br>`;
+                    }
+                    stepsHtml += `The fractional part in decimal is: <strong>${decimalFraction}</strong></div>`;
+                }
+
+                // Step 4: Combine the integer and fractional parts
+                let finalDecimal = decimalInteger + decimalFraction;
+                stepsHtml += `<div class="alert alert-info"><strong>Step 4: Combine the Integer and Fractional Parts:</strong><br>`;
+                stepsHtml += `The final decimal representation of ${octal} in octal is:<br><strong>${finalDecimal}</strong></div>`;
+
+                // Append the result
+                let resultHtml = `
+                    <div class="result-box mt-4">
+                        <span class="delete-btn text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                        <h5>Result for: ${octal}</h5>
+                        ${stepsHtml}
+                        <div class="result mt-3">Final Decimal Value: <strong>(${finalDecimal})<sub>10</sub></strong></div>
+                    </div>
+                `;
+                $("#output").append(resultHtml);
+
+                // Clear the input field after displaying the result
+                $("#Input").val("");
+
+                // Handle delete button click
+                $(".delete-btn").last().click(function () {
+                    $(this).closest(".result-box").remove();
+                });
+            });
+ //----------------------------hexadecimal to decimal----------------------------------
+ $("#hundred").click(function () {
+        $("#tens").empty(); // Clear previous alerts
+
+        let hex = $("#ones").val().trim().toUpperCase();
+
+        if (!/^[0-9A-F]+(\.[0-9A-F]+)?$/.test(hex)) {
+            $("#tens").append("<div class='alert alert-danger'>Please enter a valid hexadecimal number.</div>");
+            return;
+        }
+
+        // Split the hexadecimal number into whole and fractional parts
+        let [wholePart, fractionalPart] = hex.split('.');
+
+        // Conversion logic from hex to decimal
+        function hexToDecimal(wholePart, fractionalPart) {
+            const hexToDecimalMapping = {
+                '0': 0, '1': 1, '2': 2, '3': 3,
+                '4': 4, '5': 5, '6': 6, '7': 7,
+                '8': 8, '9': 9, 'A': 10, 'B': 11,
+                'C': 12, 'D': 13, 'E': 14, 'F': 15
+            };
+
+            // Convert the whole part
+            let wholeDecimal = 0;
+            for (let i = 0; i < wholePart.length; i++) {
+                let digitValue = hexToDecimalMapping[wholePart[i]];
+                wholeDecimal += digitValue * Math.pow(16, wholePart.length - 1 - i);
+            }
+
+            // Convert the fractional part (if it exists)
+            let fractionalDecimal = 0;
+            if (fractionalPart) {
+                for (let i = 0; i < fractionalPart.length; i++) {
+                    let digitValue = hexToDecimalMapping[fractionalPart[i]];
+                    fractionalDecimal += digitValue * Math.pow(16, -(i + 1));
+                }
+            }
+
+            return wholeDecimal + fractionalDecimal;
+        }
+
+        // Perform the conversion
+        let decimalResult = hexToDecimal(wholePart, fractionalPart);
+
+        // Generate step-by-step explanation
+        let stepsHtml = `<div class="alert alert-infoo"><strong>Step-by-Step Explanation:</strong><br>`;
+        stepsHtml += `<strong>Step 1:</strong> Convert each hexadecimal digit to its decimal equivalent and multiply by 16 raised to the appropriate power:<br><br>`;
+
+        // Whole part conversion explanation
+        stepsHtml += `<strong>Whole Part:</strong><br>`;
+        stepsHtml += `<table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>Hexadecimal Digit</th>
+                                <th>Power of 16</th>
+                                <th>Decimal Equivalent</th>
+                                <th>Calculation</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+        for (let i = 0; i < wholePart.length; i++) {
+            let digitValue = parseInt(wholePart[i], 16);
+            let power = wholePart.length - 1 - i;
+            let calculation = digitValue * Math.pow(16, power);
+            stepsHtml += `<tr>
+                            <td>${wholePart[i]}</td>
+                            <td>16<sup>${power}</sup></td>
+                            <td>${digitValue}</td>
+                            <td>${digitValue} × 16<sup>${power}</sup> = ${calculation}</td>
+                          </tr>`;
+        }
+        stepsHtml += `</tbody></table>`;
+        stepsHtml += `The sum of these values gives the whole part in decimal: <strong>${decimalResult}</strong><br><br>`;
+
+        // Fractional part conversion explanation (if it exists)
+        if (fractionalPart) {
+            stepsHtml += `<strong>Fractional Part:</strong><br>`;
+            stepsHtml += `<table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Hexadecimal Digit</th>
+                                    <th>Power of 16</th>
+                                    <th>Decimal Equivalent</th>
+                                    <th>Calculation</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+            for (let i = 0; i < fractionalPart.length; i++) {
+                let digitValue = parseInt(fractionalPart[i], 16);
+                let power = -(i + 1);
+                let calculation = digitValue * Math.pow(16, power);
+                stepsHtml += `<tr>
+                                <td>${fractionalPart[i]}</td>
+                                <td>16<sup>${power}</sup></td>
+                                <td>${digitValue}</td>
+                                <td>${digitValue} × 16<sup>${power}</sup> = ${calculation}</td>
+                              </tr>`;
+            }
+            stepsHtml += `</tbody></table>`;
+            stepsHtml += `The sum of these values gives the fractional part in decimal.<br><br>`;
+        }
+
+        // Combine whole and fractional parts
+        stepsHtml += `The final decimal value is: <strong>${decimalResult}</strong></div>`;
+
+        let resultHtml = `
+            <div class="resultt-box mt-4">
+                <span class="deleted-btn text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                <h5>Result for: ${hex}</h5>
+                ${stepsHtml}
+                <div class="result mt-3">Final Decimal Value: <strong>(${decimalResult})<sub>10</sub></strong></div>
+            </div>
+        `;
+        $("#tens").append(resultHtml);
+        $("#ones").val(""); // Clear the input field
+
+        // Add delete functionality
+        $(".deleted-btn").last().click(function () {
+            $(this).closest(".resultt-box").remove();
+        });
+    });
+ //---------------------------------hexadecimal to octal--------------------------------------
+  $("#thisprocess").click(function () {
+        $("#thislast").empty(); // Clear previous alerts
+
+        let hex = $("#thisinput").val().trim().toUpperCase();
+
+        if (!/^[0-9A-F]+(\.[0-9A-F]+)?$/.test(hex)) {
+            $("#thislast").append("<div class='alert alert-danger'>Please enter a valid hexadecimal number.</div>");
+            return;
+        }
+
+        // Split the hexadecimal number into whole and fractional parts
+        let [wholePart, fractionalPart] = hex.split('.');
+
+        // Conversion mapping for hex to binary
+        const hexToBinaryMapping = {
+            '0': '0000', '1': '0001', '2': '0010', '3': '0011',
+            '4': '0100', '5': '0101', '6': '0110', '7': '0111',
+            '8': '1000', '9': '1001', 'A': '1010', 'B': '1011',
+            'C': '1100', 'D': '1101', 'E': '1110', 'F': '1111'
+        };
+
+        // Function to convert binary to octal with detailed breakdown
+        function binaryToOctal(binary) {
+            let paddedBinary = binary.padStart(Math.ceil(binary.length / 3) * 3, '0'); // Ensure length is a multiple of 3
+            let octal = '';
+            let breakdownHtml = '';
+
+            for (let i = 0; i < paddedBinary.length; i += 3) {
+                let triplet = paddedBinary.substring(i, i + 3);
+                let octalDigit = parseInt(triplet, 2).toString(8);
+                octal += octalDigit;
+
+                // Add detailed explanation
+                breakdownHtml += `<tr>
+                                    <td>${triplet}</td>
+                                    <td>${octalDigit}</td>
+                                </tr>`;
+            }
+            return { octal, breakdownHtml };
+        }
+
+        // Convert the whole part to binary and then to octal
+        let wholeBinary = '';
+        for (let digit of wholePart) {
+            wholeBinary += hexToBinaryMapping[digit];
+        }
+        let { octal: wholeOctal, breakdownHtml: wholeBreakdown } = binaryToOctal(wholeBinary);
+
+        // Convert the fractional part to binary and then to octal (if it exists)
+        let fractionalBinary = '';
+        let fractionalOctal = '';
+        let fractionalBreakdown = '';
+        if (fractionalPart) {
+            for (let digit of fractionalPart) {
+                fractionalBinary += hexToBinaryMapping[digit];
+            }
+            let result = binaryToOctal(fractionalBinary);
+            fractionalOctal = result.octal;
+            fractionalBreakdown = result.breakdownHtml;
+        }
+
+        // Generate step-by-step explanation
+        let stepsHtml = `<div class="alert alert-infoo"><strong>Step-by-Step Explanation:</strong><br>`;
+        stepsHtml += `<strong>Step 1:</strong> Convert each hexadecimal digit to its 4-bit binary equivalent:<br><br>`;
+
+        // Whole part conversion
+        stepsHtml += `<strong>Whole Part:</strong><br>`;
+        stepsHtml += `<table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>Hexadecimal Digit</th>
+                                <th>Binary Equivalent</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+        for (let digit of wholePart) {
+            stepsHtml += `<tr>
+                            <td>${digit}</td>
+                            <td>${hexToBinaryMapping[digit]}</td>
+                          </tr>`;
+        }
+        stepsHtml += `</tbody></table>`;
+        stepsHtml += `The combined whole part in binary is: <strong>${wholeBinary}</strong><br>`;
+        stepsHtml += `Converted to octal:<br><br>`;
+        
+        // Detailed breakdown of binary groups to octal conversion for the whole part
+        stepsHtml += `<table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>Binary Group (3-bits)</th>
+                                <th>Octal Equivalent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${wholeBreakdown}
+                        </tbody>
+                      </table>`;
+        stepsHtml += `Resulting in: <strong>${wholeOctal}</strong><br><br>`;
+
+        // Fractional part conversion (if it exists)
+        if (fractionalPart) {
+            stepsHtml += `<strong>Fractional Part:</strong><br>`;
+            stepsHtml += `<table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Hexadecimal Digit</th>
+                                    <th>Binary Equivalent</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+            for (let digit of fractionalPart) {
+                stepsHtml += `<tr>
+                                <td>${digit}</td>
+                                <td>${hexToBinaryMapping[digit]}</td>
+                              </tr>`;
+            }
+            stepsHtml += `</tbody></table>`;
+            stepsHtml += `The combined fractional part in binary is: <strong>${fractionalBinary}</strong><br>`;
+            stepsHtml += `Converted to octal:<br><br>`;
+            
+            // Detailed breakdown of binary groups to octal conversion for the fractional part
+            stepsHtml += `<table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Binary Group (3-bits)</th>
+                                    <th>Octal Equivalent</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${fractionalBreakdown}
+                            </tbody>
+                          </table>`;
+            stepsHtml += `Resulting in: <strong>${fractionalOctal}</strong><br><br>`;
+        }
+
+        // Combine whole and fractional parts
+        let finalOctalResult = fractionalPart ? `${wholeOctal}.${fractionalOctal}` : wholeOctal;
+        stepsHtml += `The final octal value is: <strong>${finalOctalResult}</strong></div>`;
+
+        let resultHtml = `
+            <div class="resultt-box mt-4">
+                <span class="deleted-btn text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                <h5>Result for: ${hex}</h5>
+                ${stepsHtml}
+                <div class="result mt-3">Final Octal Value: <strong>(${finalOctalResult})<sub>8</sub></strong></div>
+            </div>
+        `;
+        $("#thislast").append(resultHtml);
+        $("#thisinput").val(""); // Clear the input field
+
+        // Add delete functionality
+        $(".deleted-btn").last().click(function () {
+            $(this).closest(".resultt-box").remove();
+        });
+    });
+//------------------------------------------conversion octal to hexadecimal------------------------------
+
+ $("#Btn").click(function () {
+                // Clear previous alerts
+                $("#Output").empty();
+
+                // Get and clean input
+                let octal = $("#input").val().trim();
+
+                // Validate the input (only digits 0-7 and optional decimal)
+                if (!/^[0-7]+(\.[0-7]+)?$/.test(octal)) {
+                    $("#Output").append("<div class='alert alert-danger'>Please enter a valid octal number.</div>");
+                    return;
+                }
+
+                // Split into integer and fractional parts
+                let [integerPart, fractionalPart] = octal.split(".");
+                if (!integerPart) integerPart = "0";
+                if (!fractionalPart) fractionalPart = "";
+
+                // Step 1: Convert Octal to Binary
+                let stepsHtml = `<div class="alert alert-info"><strong>STEP 1 - OCTAL TO BINARY:</strong><br>`;
+                stepsHtml += `To convert an octal number to binary, we write the 3-bit binary equivalent of each octal digit in the same order.<br>`;
+                
+                // Converting each octal digit to binary
+                let binaryInteger = integerPart.split("").map(digit => parseInt(digit, 8).toString(2).padStart(3, "0")).join("");
+                let binaryFraction = fractionalPart.split("").map(digit => parseInt(digit, 8).toString(2).padStart(3, "0")).join("");
+
+                // Displaying conversion for each digit
+                stepsHtml += `<br><strong>Conversions:</strong><br>`;
+                integerPart.split("").forEach(digit => {
+                    stepsHtml += `${digit} in octal is ${parseInt(digit, 8).toString(2).padStart(3, "0")} in binary.<br>`;
+                });
+
+                if (fractionalPart) {
+                    fractionalPart.split("").forEach(digit => {
+                        stepsHtml += `${digit} in octal is ${parseInt(digit, 8).toString(2).padStart(3, "0")} in binary.<br>`;
+                    });
+                }
+
+                stepsHtml += `<br>So, the binary equivalent of <strong>(${octal})₈</strong> is <strong>(${binaryInteger}${fractionalPart ? '.' + binaryFraction : ''})₂</strong></div>`;
+
+                // Step 2: Grouping Binary Digits into 4-Bit Groups
+                function padBinary(binaryStr, groupSize) {
+                    const padSize = groupSize - (binaryStr.length % groupSize);
+                    return padSize === groupSize ? binaryStr : "0".repeat(padSize) + binaryStr;
+                }
+
+                let paddedBinaryInteger = padBinary(binaryInteger, 4);
+                let paddedBinaryFraction = fractionalPart ? padBinary(binaryFraction, 4) : "";
+
+                stepsHtml += `<div class="alert alert-info"><strong>STEP 2 - BINARY TO HEXADECIMAL:</strong><br>`;
+                stepsHtml += `Starting from the binary point, we partition the binary number into groups of 4 bits.<br>`;
+                stepsHtml += `In the whole number part, we proceed to the left, and in the fractional part, we proceed to the right.<br><br>`;
+                stepsHtml += `Padded binary (integer part): <strong>${paddedBinaryInteger}</strong><br>`;
+                if (fractionalPart) {
+                    stepsHtml += `Padded binary (fractional part): <strong>${paddedBinaryFraction}</strong>`;
+                }
+                stepsHtml += `</div>`;
+
+                // Step 3: Convert 4-Bit Groups to Hexadecimal
+                let hexInteger = parseInt(paddedBinaryInteger, 2).toString(16).toUpperCase();
+                let hexFraction = fractionalPart ? parseInt(paddedBinaryFraction, 2).toString(16).toUpperCase() : "";
+
+                stepsHtml += `<div class="alert alert-info"><strong>STEP 3 - CONVERTING TO HEXADECIMAL:</strong><br>`;
+                stepsHtml += `The integer part in hexadecimal is: <strong>${hexInteger}</strong><br>`;
+                if (fractionalPart) {
+                    stepsHtml += `The fractional part in hexadecimal is: <strong>${hexFraction}</strong>`;
+                }
+                stepsHtml += `</div>`;
+
+                // Step 4: Combine the Integer and Fractional Parts
+                let finalHexadecimal = hexInteger + (fractionalPart ? `.${hexFraction}` : "");
+                stepsHtml += `<div class="alert alert-info"><strong>STEP 4 - FINAL RESULT:</strong><br>`;
+                stepsHtml += `The final hexadecimal representation of <strong>(${octal})₈</strong> is <strong>(${finalHexadecimal})₁₆</strong></div>`;
+
+                // Append the result
+                let resultHtml = `
+                    <div class="result-box mt-4">
+                        <span class="delete-btn text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                        <h5>Result for: ${octal}</h5>
+                        ${stepsHtml}
+                        <div class="result mt-3">Final Hexadecimal Value: <strong>(${finalHexadecimal})<sub>16</sub></strong></div>
+                    </div>
+                `;
+                $("#Output").append(resultHtml);
+
+                // Clear the input field after displaying the result
+                $("#input").val("");
+
+                // Handle delete button click
+                $(".delete-btn").last().click(function () {
+                    $(this).closest(".result-box").remove();
+                });
+            });
+ // /---------------------------conversion decimal to hexadecimal--------------------------------
+
+ $("#process").click(function () {
+            $("#last").empty(); // Clear previous alerts
+
+            let decimal = $("#first").val().trim();
+
+            if (!/^\d+(\.\d+)?$/.test(decimal)) {
+                $("#last").append("<div class='alert alert-danger'>Please enter a valid decimal number.</div>");
+                return;
+            }
+
+            let [integerPart, fractionalPart] = decimal.split(".");
+            integerPart = parseInt(integerPart);
+            fractionalPart = fractionalPart ? parseFloat("0." + fractionalPart) : 0;
+
+            // Convert integer part to hexadecimal
+            let integerHex = integerPart.toString(16).toUpperCase();
+
+            // Convert fractional part to hexadecimal
+            let fractionalHex = "";
+            let fraction = fractionalPart;
+            while (fraction > 0 && fractionalHex.length < 10) { // Limit the length to avoid infinite loops
+                fraction *= 16;
+                let digit = Math.floor(fraction);
+                fractionalHex += digit.toString(16).toUpperCase();
+                fraction -= digit;
+            }
+
+            let hexResult = fractionalPart ? `${integerHex}.${fractionalHex}` : integerHex;
+
+            // Step-by-step explanation with tables and steps
+            let stepsHtml = `<div class="alert alert-infoo"><strong>Step-by-Step Explanation:</strong><br>`;
+
+            // Integer part conversion table
+            stepsHtml += `<strong>Step 1:</strong> Convert the integer part (${integerPart}) to hexadecimal.<br>`;
+            stepsHtml += `Divide the integer by 16 repeatedly and note the quotient and remainder:<br><br>`;
+            stepsHtml += `<table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Division Step</th>
+                                    <th>Quotient</th>
+                                    <th>Remainder</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+
+            let divisionSteps = [];
+            let currentValue = integerPart;
+            while (currentValue > 0) {
+                let remainder = currentValue % 16;
+                let quotient = Math.floor(currentValue / 16);
+                if (quotient === 0 && remainder < 16) {
+                    divisionSteps.push({
+                        step: '',
+                        quotient: '',
+                        remainder: remainder
+                    });
+                    break;
+                } else {
+                    divisionSteps.push({
+                        step: `${currentValue} ÷ 16`,
+                        quotient: quotient,
+                        remainder: remainder
+                    });
+                }
+                currentValue = quotient;
+            }
+
+            // Add steps to table
+            divisionSteps.forEach(step => {
+                stepsHtml += `<tr>
+                                <td>${step.step}</td>
+                                <td>${step.quotient}</td>
+                                <td>${step.remainder}</td>
+                              </tr>`;
+            });
+
+            stepsHtml += `</tbody></table>`;
+            stepsHtml += `Reading the remainder value from bottom to top gives the hexadecimal value<br><br>`;
+            stepsHtml += `The hexadecimal of the integer part is: <strong>${integerHex}</strong><br><br>`;
+            
+
+            // Fractional part conversion explanation
+            if (fractionalPart) {
+                stepsHtml += `<strong>Step 2:</strong> Convert the fractional part (${fractionalPart}) to hexadecimal.<br>`;
+                stepsHtml += `Multiply the fractional part by 16 repeatedly and record the integer part of the product:<br>`;
+                stepsHtml += `<table class="table table-bordered table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Multiplication Step</th>
+                                        <th>Fraction × 16</th>
+                                        <th>Integer Part</th>
+                                        <th>New Fraction</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+
+                let fractionSteps = [];
+                fraction = fractionalPart;
+                while (fraction > 0 && fractionSteps.length < 10) { // Limit steps for clarity
+                    let multiplied = fraction * 16;
+                    let integerPart = Math.floor(multiplied);
+                    let newFraction = multiplied - integerPart;
+                    fractionSteps.push({
+                        fraction: fraction.toFixed(2),
+                        multiplied: multiplied.toFixed(2),
+                        integerPart: integerPart,
+                        newFraction: newFraction.toFixed(2)
+                    });
+                    fraction = newFraction;
+                }
+
+                fractionSteps.forEach(step => {
+                    stepsHtml += `<tr>
+                                    <td>${step.fraction} × 16</td>
+                                    <td>${step.multiplied}</td>
+                                    <td>${step.integerPart}</td>
+                                    <td>${step.newFraction}</td>
+                                  </tr>`;
+                });
+
+                stepsHtml += `</tbody></table>`;
+                stepsHtml += `The hexadecimal of the fractional part is: <strong>${fractionalHex}</strong><br><br>`;
+            }
+
+            // Final step
+            stepsHtml += `<strong>Step 3:</strong> Combine the integer and fractional parts to get the final hexadecimal value.<br>`;
+            stepsHtml += `The final hexadecimal value is: <strong>${hexResult}</strong></div>`;
+
+            let resultHtml = `
+                <div class="resultt-box mt-4">
+                    <span class="deleted-btn text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                    <h5>Result for: ${decimal}</h5>
+                    ${stepsHtml}
+                    <div class="result mt-3">Final Hexadecimal Value: <strong>(${hexResult})<sub>16</sub></strong></div>
+                </div>
+            `;
+            $("#last").append(resultHtml);
+            $("#first").val(""); // Clear the input field
+
+            $(".deleted-btn").last().click(function () {
+                $(this).closest(".resultt-box").remove();
+            });
+        });
+
+    });
+
+</script>
+<script>
+        $(document).ready(function(){
+            $('#collapseExample1').on('show.bs.collapse', function () {
+                $('#toggleIcon1').removeClass('bi-plus').addClass('bi-dash');
+            });
+            $('#collapseExample1').on('hide.bs.collapse', function () {
+                $('#toggleIcon1').removeClass('bi-dash').addClass('bi-plus');
+            });
+             $('#collapseExample2').on('show.bs.collapse', function () {
+                $('#toggleIcon2').removeClass('bi-plus').addClass('bi-dash');
+            });
+            $('#collapseExample2').on('hide.bs.collapse', function () {
+                $('#toggleIcon2').removeClass('bi-dash').addClass('bi-plus');
+            });
+            //third
+            $('#collapseExample3').on('show.bs.collapse', function () {
+                $('#toggleIcon3').removeClass('bi-plus').addClass('bi-dash');
+            });
+            $('#collapseExample3').on('hide.bs.collapse', function () {
+                $('#toggleIcon3').removeClass('bi-dash').addClass('bi-plus');
+            });
+            //fourth
+            $('#collapseExample4').on('show.bs.collapse', function () {
+                $('#toggleIcon4').removeClass('bi-plus').addClass('bi-dash');
+            });
+            $('#collapseExample4').on('hide.bs.collapse', function () {
+                $('#toggleIcon4').removeClass('bi-dash').addClass('bi-plus');
+            });
+            $('#collapseExample5').on('show.bs.collapse', function () {
+                $('#toggleIcon5').removeClass('bi-plus').addClass('bi-dash');
+            });
+            $('#collapseExample5').on('hide.bs.collapse', function () {
+                $('#toggleIcon5').removeClass('bi-dash').addClass('bi-plus');
+            });
+            $('#collapseExample6').on('show.bs.collapse', function () {
+                $('#toggleIcon6').removeClass('bi-plus').addClass('bi-dash');
+            });
+            $('#collapseExample6').on('hide.bs.collapse', function () {
+                $('#toggleIcon6').removeClass('bi-dash').addClass('bi-plus');
+            });
+           
+        });
+    </script>
+
+
+</body>
+
+</html>
+ 
